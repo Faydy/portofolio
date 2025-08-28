@@ -17,3 +17,13 @@
     color: #a7e7e8;
     font-size: 3em;
 }
+figure img{
+    transition: all 0.3s ease-out;
+}
+figure img:hover{
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+    
+@media only screen and (max-width: 600px) {
+}
