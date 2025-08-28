@@ -36,12 +36,13 @@ figure img:hover {
     padding: 20px;
 }
 
-@media screen and (max-width: 1921px) and (min-width: 1200px) {
+@media screen and (max-width: 3000px) and (min-width: 1200px) {
     .certificationsGrid>div>div {
-        width: 800px;
-        height: 650px;
+        width: 43vw;
+        max-height: 32.3vw;
     }
 }
+
 
 @media screen and (max-width: 768px) {
     .certifications {
