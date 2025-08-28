@@ -43,7 +43,7 @@ figure img:hover {
     }
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1700px) {
     .certificationsGrid>div>div {
         width: 600px;
         height: auto;
