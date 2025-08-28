@@ -9,8 +9,9 @@ function Certificate(name) {
   </div>
   <figure>
     <img
+      draggable="false"
       src={name.src}
-      alt="Shoes" />
+      alt="Certificate" />
   </figure>
 </div>
     );
