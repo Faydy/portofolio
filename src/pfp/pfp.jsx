@@ -2,7 +2,7 @@ import { div } from "framer-motion/client"
 import pfp from "../assets/pfp.jpg"
 import styles from "./pfp.module.css"
 import {motion} from "framer-motion"
-
+import useIsMobile from "../mobile"
 const gridContainerVariants = {
     hidden: {opacity:0}, show: {
          opacity: 1,
@@ -26,7 +26,7 @@ function Pfp()
             </motion.div>
         </div>
         <motion.h1 variants={gridSquareVariants} className={styles.description}>
-            Hi, I’m <span className={styles.nume}>Fady Samman</span> — passionate about creating intuitive and aesthetic digital products.
+            Hi,{useIsMobile() ? <br></br> : null} I’m <span className={styles.nume}>Fady Samman</span> — passionate about creating intuitive and aesthetic digital products.
         </motion.h1>
         
         </motion.div>

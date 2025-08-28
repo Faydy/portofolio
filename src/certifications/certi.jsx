@@ -25,7 +25,7 @@ function Certifications() {
     return (
         <motion.div id="certifications" variants={gridContainerVariants} initial="hidden" animate="show" className={styles.certifications}>
             <motion.h1 variants={gridSquareVariants} className="Certifications">Certifications</motion.h1>
-            <motion.div  variants={gridSquareVariants}  style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'space-evenly', alignItems: 'center', padding: '20px' }}>
+            <motion.div  variants={gridSquareVariants} className={styles.certificationsGrid} >
                 <motion.div variants={gridSquareVariants}>
                     <Certificate src={c1} issuer={"Freecodecamp"} title="Responsive Web Design" link={"https://www.freecodecamp.org/certification/f4dy/responsive-web-design"} />
                 </motion.div>
