@@ -1,4 +1,4 @@
-import { div, img } from "framer-motion/client";
+import { div, img, s, style } from "framer-motion/client";
 import c2 from "./assets/2.jpg"
 import useIsMobile from "../mobile";
 function Certificate(name) {
@@ -17,7 +17,7 @@ function Certificate(name) {
     </div>
   </>
   const small = <>
-    <div className="card bg-base-100 w-[90vw] shadow-sm mb-10 ">
+    <div className="card bg-base-100 w-[90vw] shadow-sm mb-10">
       <div className="card-body flex justify-center items-center">
         <h2 className="card-title hover:text-blue-100 duration-300 ease-out hover:text-xl">{name.title}</h2>
         <p className="hover:text-blue-100 duration-300 ease-out hover:text-base"><a href={name.link} target="_blank">{name.issuer}</a></p>
