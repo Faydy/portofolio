@@ -1,0 +1,19 @@
+.certifications{
+    margin: 100px 0;
+    padding: 50px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #111827;
+}
+.certifications h1{
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.certifications h1:hover{
+    color: #a7e7e8;
+    font-size: 3em;
+}

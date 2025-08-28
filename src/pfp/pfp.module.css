@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.profileMain {
+    display: flex;;
+    justify-content: center;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.profilePic {
+    overflow: hidden;
+  width: 400px;         
+  height: 400px;
+  border-radius: 50%;    
+  overflow: hidden;    
+  border: 6px solid #1d2a3a; 
+  transition: all 0.3s ease-out;
+}
+
+.profilePic:hover{
+  transform: scale(1.05);
+  border: 6px solid #a7e7e8;
+}
+
+.profilePic img {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.4);
+  transition: all 0.3s ease;
+}
+.profilePic img:hover{
+    transform: scale(1.6);
+}
+.description{
+    color: black;
+      font-family: "Montserrat", sans-serif;
+      font-size: 3em;
+      font-weight: 700;
+      margin-top: 50px;  /* spațiu sub poză */
+  padding: 0 20px;   /* mai degrabă padding pe lateral decât 200px */
+  text-align: center;
+}
+.nume{
+    cursor: pointer;
+    color: #a7e7e8;
+    font-weight: 700;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+.nume:hover{
+    color: #1d2a3a;
+    font-size: 1.2em;
+    font-weight: 800;
+}
