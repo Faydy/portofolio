@@ -1,6 +1,7 @@
 import Navigation from "./navigation";
 import Pfp from "./pfp/pfp";
 import Certifications from "./certifications/certi";
+import Footer from "./footer";
 
 
 
@@ -12,6 +13,7 @@ function App() {
       <Navigation />
       <Pfp />
       <Certifications/>
+      <Footer />
     </>
   )
 }

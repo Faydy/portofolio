@@ -45,9 +45,9 @@ function Certifications() {
                 <motion.div variants={gridSquareVariants}>
                     <Certificate src={c5} issuer={"ITLevel"} title="Concursul National 'CGame - poveste si provocare" link={"https://www.itlevel.ro/"} />
                 </motion.div>
-                
             </motion.div>
             </motion.div>
+            
     )
 }
 
