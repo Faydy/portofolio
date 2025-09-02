@@ -43,6 +43,7 @@
   text-align: center;
 }
 .nume{
+    will-change: transform;
     cursor: pointer;
     color: #a7e7e8;
     font-weight: 700;
