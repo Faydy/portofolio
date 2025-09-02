@@ -1,42 +1,175 @@
 import { u } from "motion/react-client";
+import emailjs from '@emailjs/browser';
 import useIsMobile from "./mobile";
+import { useEffect, useState, useRef } from 'react';
+
+const formatDate = () => {
+    const now = new Date();
+    const zi = String(now.getDate()).padStart(2, "0");
+    const luna = String(now.getMonth() + 1).padStart(2, "0"); // lunile sunt 0-11
+    const an = now.getFullYear();
+    const ore = String(now.getHours()).padStart(2, "0");
+    const minute = String(now.getMinutes()).padStart(2, "0");
+
+    return `${zi}.${luna}.${an} ${ore}:${minute}`;
+};
+
+
 function Footer() {
-    const small = <>
-        <section class="min-h-screen bg-white dark:bg-gray-900 lg:flex">
-            <div class="flex flex-col justify-center w-full p-8 lg:bg-gray-100 lg:dark:bg-gray-800 lg:px-12 xl:px-32 lg:w-1/2">
-                <h1 class="text-2xl font-semibold text-gray-800 capitalize dark:text-white lg:text-3xl">Contact me.</h1>
-                <p class="mt-4 text-gray-500 dark:text-gray-400">
-                    Ask us everything and we would love
-                    to hear from you
+    const [ip, setIp] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
+    const [fadeOut, setFadeOut] = useState(false);
+
+    useEffect(() => {
+        fetch("https://api.ipify.org?format=json")
+            .then(res => res.json())
+            .then(data => setIp(data.ip))
+            .catch(err => console.error("Eroare IP:", err));
+
+
+    }, []);
+
+    useEffect(() => {
+        // După 2.5 secunde începem fade-out
+        const fadeTimer = setTimeout(() => setFadeOut(true), 2500);
+
+        // După 3 secunde ascundem complet popup-ul
+        const hideTimer = setTimeout(() => setShowPopup(false), 3000);
+
+        return () => {
+            clearTimeout(fadeTimer);
+            clearTimeout(hideTimer);
+        };
+    }, []);
+
+    const popup = (
+        <div
+            className={`flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800 transition-opacity duration-500 ${fadeOut ? "opacity-0" : "opacity-100"
+                }`}
+        >
+            <div className="flex items-center justify-center w-12 bg-emerald-500">
+                <svg
+                    className="w-6 h-6 text-white fill-current"
+                    viewBox="0 0 40 40"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z" />
+                </svg>
+            </div>
+
+            <div className="px-4 py-2 -mx-3">
+                <div className="mx-3">
+                    <span className="font-semibold text-emerald-500 dark:text-emerald-400">Success</span>
+                    <p className="text-sm text-gray-600 dark:text-gray-200">Your account was registered!</p>
+                </div>
+            </div>
+        </div>
+    );
+
+    const triggerPopup = () => {
+        setShowPopup(true);
+        setFadeOut(false);
+
+        // Fade-out după 2.5 secunde
+        setTimeout(() => setFadeOut(true), 2500);
+
+        // Ascunde complet după 3 secunde
+        setTimeout(() => setShowPopup(false), 3000);
+    };
+
+
+
+
+    const form = useRef();
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+
+
+        emailjs
+            .sendForm('service_l3urp9b', 'template_e6n72jp', form.current, {
+                publicKey: '59vHXHAq-YCEJYj-Z',
+            })
+            .then(
+                () => {
+                    console.log('SUCCESS!');
+                    triggerPopup();
+                    form.current.reset();
+                },
+                (error) => {
+                    console.log('FAILED...', error.text);
+                },
+            );
+    };
+    const small = (
+        <section className="bg-white dark:bg-gray-900 lg:flex">
+            {/* Text Section */}
+            <div className="w-full p-8 pb-0 lg:bg-gray-100 lg:dark:bg-gray-800 lg:px-12 xl:px-32 lg:w-1/2 flex flex-col">
+                <h1 className="text-2xl font-semibold text-gray-800 capitalize dark:text-white lg:text-3xl">
+                    Contact me.
+                </h1>
+                <p className="mt-4 text-gray-500 dark:text-gray-400">
+                    Ask me everything and I would love to hear from you
                 </p>
             </div>
-            <div class="flex flex-col justify-center w-full p-8 pt-0 lg:w-1/2 lg:px-12 xl:px-24 ">
-                <form>
-                    <div class="-mx-2 md:items-center md:flex">
-                        <div class="flex-1 px-2">
-                            <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Full Name</label>
-                            <input type="text" placeholder="John Doe" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+
+            {/* Form Section */}
+            <div className="w-full p-8 lg:w-1/2 lg:px-12 xl:px-24 flex flex-col">
+                <form ref={form} onSubmit={sendEmail}>
+                    <input type="hidden" name="time" value={formatDate()} />
+                    <input type="hidden" name="ip" value={ip} />
+
+                    <div className="-mx-2 md:items-center md:flex">
+                        <div className="flex-1 px-2">
+                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
+                                Full Name
+                            </label>
+                            <input
+                                required
+                                type="text"
+                                name="name"
+                                placeholder="John Doe"
+                                className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                            />
                         </div>
 
-                        <div class="flex-1 px-2 mt-4 md:mt-0">
-                            <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Email address</label>
-                            <input type="email" placeholder="johndoe@example.com" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <div className="flex-1 px-2 mt-4 md:mt-0">
+                            <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
+                                Email address
+                            </label>
+                            <input
+                                required
+                                type="email"
+                                name="email"
+                                placeholder="johndoe@example.com"
+                                className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                            />
                         </div>
                     </div>
-                    <div class="w-full mt-4">
-                        <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Message</label>
-                        <textarea class="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-56 dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Message"></textarea>
+
+                    <div className="w-full mt-4">
+                        <label className="block mb-2 text-sm text-gray-600 dark:text-gray-200">
+                            Message
+                        </label>
+                        <textarea
+                            required
+                            className="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-56 dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                            name="message"
+                            placeholder="Message"
+                        ></textarea>
                     </div>
 
-                    <button class="w-full px-6 py-3 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                    <button className="w-full px-6 py-3 mt-4 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                         get in touch
                     </button>
                 </form>
             </div>
         </section>
+    );
 
-    </>;
+
     return (
+
         <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content items-center p-4">
             {useIsMobile() ? small : null}
             <aside className="grid-flow-col items-center">
@@ -71,10 +204,36 @@ function Footer() {
                             <path d="M 25 2 C 12.309288 2 2 12.309297 2 25 C 2 37.690703 12.309288 48 25 48 C 37.690712 48 48 37.690703 48 25 C 48 12.309297 37.690712 2 25 2 z M 25 4 C 36.609833 4 46 13.390175 46 25 C 46 36.609825 36.609833 46 25 46 C 13.390167 46 4 36.609825 4 25 C 4 13.390175 13.390167 4 25 4 z M 26.5 11 C 21.579 11 18.409109 14.037 18.037109 19 L 14 19 L 14 25 L 18 25 L 18 36 L 24 36 L 24 25 L 28 25 L 28 36 L 34 36 L 34 19 L 24.066406 19 C 24.360406 17.001 25.579 17 26.5 17 L 29.03125 17 L 29.03125 11 L 26.5 11 z"></path>
                         </svg>
                     </span>
-
                 </a>
             </nav>
+            {showPopup && (
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
+                    <div
+                        className={`flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800 transition-opacity duration-500 ${fadeOut ? "opacity-0" : "opacity-100"
+                            }`}
+                    >
+                        <div className="flex items-center justify-center w-12 bg-emerald-500">
+                            <svg
+                                className="w-6 h-6 text-white fill-current"
+                                viewBox="0 0 40 40"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z" />
+                            </svg>
+                        </div>
+
+                        <div className="px-4 py-2 -mx-3">
+                            <div className="mx-3">
+                                <span className="font-semibold text-emerald-500 dark:text-emerald-400">Success</span>
+                                <p className="text-sm text-gray-600 dark:text-gray-200">Your message has been sent!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </footer>
+
     );
 }
 

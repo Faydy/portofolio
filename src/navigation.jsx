@@ -5,8 +5,6 @@ import useIsMobile from "./mobile";
 import emailjs from '@emailjs/browser';
 import { useEffect, useState, useRef } from 'react';
 
-
-
 const gridContainerVariants = {
     hidden: { opacity: 0 }, show: {
         opacity: 1,
@@ -74,8 +72,8 @@ function Navigation() {
                 <form ref={form} onSubmit={sendEmail} className="mt-4 space-y-3">
                     <input type="hidden" name="time" value={formatDate()} />
                     <input type="hidden" name="ip" value={ip} />
-                    <input required name="name" type="text" placeholder="Name" className="input input-bordered w-full" />
-                    <input required name="email" type="email" placeholder="Email" className="input input-bordered w-full" />
+                    <input required name="name" type="text" placeholder="Full Name" className="input input-bordered w-full" />
+                    <input required name="email" type="email" placeholder="Email address" className="input input-bordered w-full" />
                     <textarea required name="message" placeholder="Message" className="textarea textarea-bordered w-full"></textarea>
                     <div className="modal-action">
                         <label htmlFor="contact-modal" className="btn btn-ghost">Close</label>
