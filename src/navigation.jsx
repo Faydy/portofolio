@@ -47,6 +47,7 @@ function Navigation() {
 
     const sendEmail = (e) => {
         e.preventDefault();
+        document.getElementById("contact-modal").checked = false; 
 
         emailjs
             .sendForm('service_l3urp9b', 'template_e6n72jp', form.current, {
@@ -73,28 +74,23 @@ function Navigation() {
                 <form ref={form} onSubmit={sendEmail} className="mt-4 space-y-3">
                     <input type="hidden" name="time" value={formatDate()} />
                     <input type="hidden" name="ip" value={ip} />
-                    <input name="name" type="text" placeholder="Name" className="input input-bordered w-full" />
-                    <input name="email" type="email" placeholder="Email" className="input input-bordered w-full" />
-                    <textarea name="message" placeholder="Message" className="textarea textarea-bordered w-full"></textarea>
+                    <input required name="name" type="text" placeholder="Name" className="input input-bordered w-full" />
+                    <input required name="email" type="email" placeholder="Email" className="input input-bordered w-full" />
+                    <textarea required name="message" placeholder="Message" className="textarea textarea-bordered w-full"></textarea>
                     <div className="modal-action">
                         <label htmlFor="contact-modal" className="btn btn-ghost">Close</label>
-                        <input htmlFor="contact-modal" type="submit" onClick={() => document.getElementById("contact-modal").checked = false} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 cursor-pointer dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" value="Submit" />
+                        <input htmlFor="contact-modal" type="submit" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 cursor-pointer dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" value="Submit" />
                     </div>
                 </form>
             </div>
         </div>
     </>
-    const small = <>
-    <div className="fab">
-  <button className="btn btn-lg btn-circle btn-primary fixed z-1 bottom-4 right-4 w-20 h-20 text-base p-5">Contact</button>
-</div>
-
-    </>;
+    
     return (
         <motion.nav variants={gridContainerVariants} initial="hidden" animate="show" className="navigation">
             <a href="#"><motion.img variants={gridSquareVariants} src={logo} draggable="false" alt="Logo" className="logo" /></a>
             <ul className="nav-links">
-                {!useIsMobile() ? large : small}
+                {!useIsMobile() ? large : null}
             </ul>
         </motion.nav>
     );
